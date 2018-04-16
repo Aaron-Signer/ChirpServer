@@ -9,12 +9,7 @@ public class UserRepository implements UserStorage{
 	
 	private UserRepository()
 	{
-		users = new ArrayList<User>();
-		users.add(new User("Aaron", "Aaron-Signer","signap22@wclive.westminster.edu"));
-		users.add(new User("Matt", "Matt-Gurneal","gurnmc22@wclive.westminster.edu"));
-//		users.add(new User("Jamie", "Jamie-Thompson","thomjm22@wclive.westminster.edu"));
-
-
+		resetRepository();
 	}
 	
 	public static UserRepository getInstance()
@@ -23,6 +18,14 @@ public class UserRepository implements UserStorage{
 			instance = new UserRepository();
 		
 		return instance;
+	}
+	
+	public void resetRepository()
+	{
+		users = new ArrayList<User>();
+		users.add(new User("Aaron", "Aaron-Signer","signap22@wclive.westminster.edu"));
+		users.add(new User("Matt", "Matt-Gurneal","gurnmc22@wclive.westminster.edu"));
+		users.add(new User("Jamie", "Jamie-Thompson","thomjm22@wclive.westminster.edu"));
 	}
 	
 	public void addUser(User u)
@@ -43,6 +46,19 @@ public class UserRepository implements UserStorage{
 	public ArrayList<User> getUsers()
 	{
 		return users;
+	}
+	
+	public void removeUserByEmail(String email)
+	{
+		users.re
+		for(int i = 0; i < users.size(); i++)
+			if(users.get(i).getEmail().equals(email))
+				users.remove(i);
+	}
+	
+	public int getNumberOfUsers()
+	{
+		return users.size();
 	}
 	
 }

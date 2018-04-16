@@ -1,7 +1,6 @@
 package edu.wc.cs383.chirp;
 
-import static spark.Spark.get;
-import static spark.Spark.put;
+import static spark.Spark.*;
 
 import java.util.UUID;
 
@@ -26,11 +25,14 @@ public class UserController {
 			return service.getUserByEmail(req.params(":email"));
 		}, json());		
 		
-		put("/users", (req, res) -> {
-			User u = new User("Sam", "Sam-Hockenberry","hocksa22@wclive.westminster.edu");
+		post("/users/:name/:username/:email", (req, res) -> {
+			User u = new User(req.params(":name"), req.params(":username"),req.params(":email"));
 			service.addUser(u);
 			return service.getUsers();
 		}, json());
+		
+//		delete("/users/:email"), (req, res) -> {
+//		}, json());
 	}
 
 

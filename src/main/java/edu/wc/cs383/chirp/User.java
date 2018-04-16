@@ -1,5 +1,7 @@
 package edu.wc.cs383.chirp;
 
+import java.util.*;
+
 public class User {
 
 	private String name, handle, id, email;
@@ -40,6 +42,10 @@ public class User {
 	public void setEmail(String e)
 	{
 		email = e;
+	}
+
+	public boolean equals(User u2) {
+		if(u2.getEmail() == email)
 	}
 	
 }
