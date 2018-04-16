@@ -1,8 +1,8 @@
 package edu.wc.cs383.chirp;
 
-import java.util.ArrayList;
+import java.util.*;
 
-public class ChirpRepository {
+public class ChirpRepository implements ChirpStorage{
 	
 	private ArrayList<Chirp> chirps;
 	private static ChirpRepository instance = null;
@@ -10,14 +10,13 @@ public class ChirpRepository {
 	private ChirpRepository()
 	{
 		chirps = new ArrayList<Chirp>();
-		chirps.add(new Chirp("signap22@wclive.westminster.edu", "Hello!"));
+		chirps.add(new Chirp("signap22@wclive.westminster.edu", "Hello!", new Date()));
 	}
 	
 	public static ChirpRepository getInstance()
 	{
 		if(instance == null)
 			instance = new ChirpRepository();
-		//butt
 		return instance;
 	}
 	

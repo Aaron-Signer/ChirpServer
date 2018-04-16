@@ -2,7 +2,7 @@ package edu.wc.cs383.chirp;
 
 import java.util.*;
 
-public class UserRepository {
+public class UserRepository implements UserStorage{
 
 	private ArrayList<User> users;
 	private static UserRepository instance = null;
@@ -12,7 +12,7 @@ public class UserRepository {
 		users = new ArrayList<User>();
 		users.add(new User("Aaron", "Aaron-Signer","signap22@wclive.westminster.edu"));
 		users.add(new User("Matt", "Matt-Gurneal","gurnmc22@wclive.westminster.edu"));
-		users.add(new User("Jamie", "Jamie-Thompson","thomjm22@wclive.westminster.edu"));
+//		users.add(new User("Jamie", "Jamie-Thompson","thomjm22@wclive.westminster.edu"));
 
 
 	}
@@ -38,6 +38,11 @@ public class UserRepository {
 				return users.get(i);
 		}
 		return null;
+	}
+	
+	public ArrayList<User> getUsers()
+	{
+		return users;
 	}
 	
 }

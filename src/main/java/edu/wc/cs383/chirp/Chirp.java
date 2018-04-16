@@ -4,12 +4,14 @@ import java.util.*;
 public class Chirp {
 
 	String message, email;
+	Date date;
 	UUID id;
 	
-	public Chirp(String em, String m)
+	public Chirp(String em, String m, Date d)
 	{
 		email = em;
 		message = m;
+		date = d;
 	}
 	
 	public String getMessage()
