@@ -4,19 +4,18 @@ import java.util.*;
 
 public class User {
 
-	private String name, handle, id, email;
-	private int ids [];
+	private String handle, email, password;
+	private ArrayList<User> watchlist;
+	private PriorityQueue<Chirp> sortedWatchlist;
 	
-	public User(String n, String h, String e)
+	public User(String h, String e, String p)
 	{
-		name = n;
 		handle = h;
 		email = e;
-	}
-	
-	public String getName()
-	{
-		return name;
+		password = p;
+		ChirpComparator comp = new ChirpComparator();
+		sortedWatchlist = new PriorityQueue<Chirp>(1, comp);
+		watchlist = new ArrayList<User>();
 	}
 	
 	public String getHandle()
@@ -29,9 +28,21 @@ public class User {
 		return email;
 	}
 	
-	public void setName(String u)
+	public ArrayList<User> getWatchlist()
 	{
-		name = u;
+		return watchlist;
+	}
+	
+	public PriorityQueue<Chirp> getSortedWatchlist()
+	{
+		for(User u: watchlist)
+		{
+			for(Chirp c: ChirpRepository.getInstance().getChirps(u.getEmail()))
+				sortedWatchlist.add(c);
+		}
+		
+		return sortedWatchlist;
+		
 	}
 	
 	public void setHandle(String h)
@@ -39,13 +50,21 @@ public class User {
 		handle = h;
 	}
 	
-	public void setEmail(String e)
+	public void setPassword(String p)
 	{
-		email = e;
-	}
-
-	public boolean equals(User u2) {
-		if(u2.getEmail() == email)
+		password = p;
 	}
 	
+	public boolean checkPassword(String p)
+	{
+		return password.equals(p);
+	}
+	
+	public void addWatched(String email)
+	{
+		User u = UserRepository.getInstance().getUserByEmail(email);
+		System.out.println(u.getEmail());
+		watchlist.add(UserRepository.getInstance().getUserByEmail(email));
+		System.out.println(watchlist.get(0).getEmail());
+	}
 }

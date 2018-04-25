@@ -10,17 +10,6 @@ import org.junit.Test;
 
 public class AppTest 
 {
-	
-	@Test
-	public void getNameTest()
-	{
-		UserRepository.getInstance().resetRepository();
-		assertEquals(UserRepository.getInstance().getUserByEmail("signap22@wclive.westminster.edu").getName(), "Aaron");
-		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getName(), "Matt");
-		assertEquals(UserRepository.getInstance().getUserByEmail("thomjm22@wclive.westminster.edu").getName(), "Jamie");
-
-	}
-
 	@Test
 	public void setHandleTest()
 	{
@@ -30,13 +19,21 @@ public class AppTest
 		assertEquals(UserRepository.getInstance().getUserByEmail("signap22@wclive.westminster.edu").getHandle(), "Signer");
 	}
 	
+//	@Test
+//	public void removeUserTest()
+//	{
+//		UserRepository.getInstance().resetRepository();
+//		assertEquals(UserRepository.getInstance().getNumberOfUsers(), 3);
+//		UserRepository.getInstance().removeUserByEmail("signap22@wclive.westminster.edu");
+//		assertEquals(UserRepository.getInstance().getNumberOfUsers(), 2);
+//	}
+	
 	@Test
-	public void removeUserTest()
+	public void updateUserTest()
 	{
 		UserRepository.getInstance().resetRepository();
-		assertEquals(UserRepository.getInstance().getNumberOfUsers(), 3);
-		UserRepository.getInstance().removeUserByEmail("signap22@wclive.westminster.edu");
-		assertEquals(UserRepository.getInstance().getNumberOfUsers(), 2);
+		UserRepository.getInstance().updateUserByEmail("signap22@wclive.westminster.edu", "Aaron Signer", "Sigstar");
+		assertEquals(UserRepository.getInstance().getUserByEmail("signap22@wclive.westminster.edu").getHandle(), "Sigstar");
 	}
 	
 	@Test
@@ -46,4 +43,11 @@ public class AppTest
 		assertEquals(ChirpRepository.getInstance().getChirps("signap22@wclive.westminster.edu").get(0).getMessage(), "Hello!");
 	}
 	
+	@Test
+	public void getSortedWatchlist() 
+	{
+		UserRepository.getInstance().resetRepository();
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").addWatched("signap22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getSortedWatchlist().peek().getMessage(), "Hello!");
+	}
 }

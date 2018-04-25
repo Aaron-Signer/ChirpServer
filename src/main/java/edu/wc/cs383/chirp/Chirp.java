@@ -24,4 +24,9 @@ public class Chirp {
 		return email;
 	}
 	
+	public Date getDate()
+	{
+		return date;
+	}
+	
 }

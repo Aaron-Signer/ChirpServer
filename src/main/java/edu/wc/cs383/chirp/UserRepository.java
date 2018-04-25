@@ -23,24 +23,25 @@ public class UserRepository implements UserStorage{
 	public void resetRepository()
 	{
 		users = new ArrayList<User>();
-		users.add(new User("Aaron", "Aaron-Signer","signap22@wclive.westminster.edu"));
-		users.add(new User("Matt", "Matt-Gurneal","gurnmc22@wclive.westminster.edu"));
-		users.add(new User("Jamie", "Jamie-Thompson","thomjm22@wclive.westminster.edu"));
+		users.add(new User("Aaron-Signer","signap22@wclive.westminster.edu", "Aaron"));
+		users.add(new User("Matt-Gurneal","gurnmc22@wclive.westminster.edu", "Matt"));
+		users.add(new User("Jamie-Thompson","thomjm22@wclive.westminster.edu", "Jamie"));
 	}
 	
-	public void addUser(User u)
+	public void addUser(User u) throws DuplicateEmailException
 	{
+		if(getUserIndex(u.getEmail()) != -1)
+			throw new DuplicateEmailException("User already exits");
+		
 		users.add(u);
 	}
 	
-	public User getUserByEmail(String email)
+	public User getUserByEmail(String email) //throws UserNotFoundException
 	{
-		for(int i = 0; i < users.size(); i++)
-		{
-			if(users.get(i).getEmail().equals(email))
-				return users.get(i);
-		}
-		return null;
+//		if(getUserIndex(UserRepository.getInstance().getUserByEmail(email).getEmail()) == -1)
+//			throw new UserNotFoundException("No User");
+			
+		return users.get(getUserIndex(email));
 	}
 	
 	public ArrayList<User> getUsers()
@@ -48,17 +49,31 @@ public class UserRepository implements UserStorage{
 		return users;
 	}
 	
-	public void removeUserByEmail(String email)
-	{
-		users.re
-		for(int i = 0; i < users.size(); i++)
-			if(users.get(i).getEmail().equals(email))
-				users.remove(i);
-	}
+//	public void removeUserByEmail(String email)
+//	{
+//		User u = getUserByEmail(email);
+//		users.remove(u);
+//	}
 	
 	public int getNumberOfUsers()
 	{
 		return users.size();
+	}
+	
+	public void updateUserByEmail(String email, String password, String handle)
+	{
+		users.get(getUserIndex(email)).setHandle(handle);
+		users.get(getUserIndex(email)).setPassword(password);
+	}
+	
+	public int getUserIndex(String email)
+	{
+		for(int i = 0; i < users.size(); i++)
+		{
+			if(users.get(i).getEmail().equals(email))
+				return i;
+		}
+		return -1;
 	}
 	
 }
