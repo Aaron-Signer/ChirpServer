@@ -7,9 +7,9 @@ public interface UserStorage{
 	public void addUser(User u) throws StorageException;
 	public User getUserByEmail(String email) throws StorageException;
 	public ArrayList<User> getUsers();
-//	public void removeUserByEmail(String email);
+	public void removeUserByEmail(String email) throws StorageException;
 	public int getNumberOfUsers();
-	public void updateUserByEmail(String email, String name, String handle);
+	public void updateUserByEmail(String email, String name, String handle) throws StorageException;
 	public int getUserIndex(String email);
 	
 }

@@ -36,10 +36,10 @@ public class UserRepository implements UserStorage{
 		users.add(u);
 	}
 	
-	public User getUserByEmail(String email) //throws UserNotFoundException
+	public User getUserByEmail(String email) throws UserNotFoundException
 	{
-//		if(getUserIndex(UserRepository.getInstance().getUserByEmail(email).getEmail()) == -1)
-//			throw new UserNotFoundException("No User");
+		if(getUserIndex(UserRepository.getInstance().getUserByEmail(email).getEmail()) == -1)
+			throw new UserNotFoundException("No User");
 			
 		return users.get(getUserIndex(email));
 	}
@@ -49,11 +49,13 @@ public class UserRepository implements UserStorage{
 		return users;
 	}
 	
-//	public void removeUserByEmail(String email)
-//	{
-//		User u = getUserByEmail(email);
-//		users.remove(u);
-//	}
+	public void removeUserByEmail(String email) throws UserNotFoundException
+	{
+		if(getUserIndex(UserRepository.getInstance().getUserByEmail(email).getEmail()) == -1)
+			throw new UserNotFoundException("No User");
+
+		users.remove(getUserByEmail(email));
+	}
 	
 	public int getNumberOfUsers()
 	{

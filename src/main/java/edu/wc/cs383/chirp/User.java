@@ -60,11 +60,8 @@ public class User {
 		return password.equals(p);
 	}
 	
-	public void addWatched(String email)
+	public void addWatched(String email) throws StorageException
 	{
-		User u = UserRepository.getInstance().getUserByEmail(email);
-		System.out.println(u.getEmail());
 		watchlist.add(UserRepository.getInstance().getUserByEmail(email));
-		System.out.println(watchlist.get(0).getEmail());
 	}
 }
