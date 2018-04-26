@@ -33,7 +33,7 @@ public class User {
 		return watchlist;
 	}
 	
-	public PriorityQueue<Chirp> getSortedWatchlist()
+	public PriorityQueue<Chirp> getSortedWatchlist() throws StorageException
 	{
 		for(User u: watchlist)
 		{

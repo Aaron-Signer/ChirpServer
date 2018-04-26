@@ -24,24 +24,38 @@ public class UserController {
 		 return service.getUsers();
 		}, json());
 		
-//		Returns a user given an email address
+//		Returns an user given an email address
 		get("/users/:email", (req, res) -> {
 			return service.getUserByEmail(req.params(":email"));
 		}, json());		
 		
+//		Creates an user in the database
 		post("/users/:handle/:email/:password", (req, res) -> {
 			User u = new User(req.params(":handle"),req.params(":email"), req.params(":password"));
 			service.addUser(u);
 			return service.getUsers();
 		}, json());
 		
-		get("/throwexception", (req, res) -> {
-			throw new DuplicateEmailException("BAD");
-		});
+//		Delete an user by email
+		delete("/users/:email", (req, res) -> {
+			service.removeUserByEmail(req.params(":email"));
+			return service.getUsers();
+		}, json());
 		
+//		Update an user by email
+		put("/users/:email/:handle/:password", (req, res) -> {
+			service.updateUserByEmail(req.params(":email"), req.params(":password"), req.params(":handle"));
+			return service.getUsers();
+		}, json());
+				
 //		exception(ArrayIndexOutOfBoundsException.class, (exception, request, response) -> {
 //		    halt(404);
 //		});
+		
+		exception(UserNotFoundException.class, (exception, request, response) -> {
+		    response.status(400);
+		    response.body("No User Exist");
+		});
 		
 		exception(DuplicateEmailException.class, (exception, request, response) -> {
 		    response.status(409);

@@ -4,10 +4,10 @@ import java.util.*;
 
 public interface UserStorage{
 
-	public void addUser(User u) throws StorageException;
-	public User getUserByEmail(String email) throws StorageException;
-	public ArrayList<User> getUsers();
-	public void removeUserByEmail(String email) throws StorageException;
+	public void addUser(User u) throws StorageException;	//In UserController
+	public User getUserByEmail(String email) throws StorageException;	//In UserController
+	public ArrayList<User> getUsers();	//In UserController
+	public void removeUserByEmail(String email) throws StorageException;	//In UserController
 	public int getNumberOfUsers();
 	public void updateUserByEmail(String email, String name, String handle) throws StorageException;
 	public int getUserIndex(String email);
