@@ -13,8 +13,8 @@ import com.google.gson.Gson;
 public class ChirpServer {
     
     public static void main(String[] args) {
-		port(80);
-//		BasicConfigurator.configure();
+		port(5000);
+		BasicConfigurator.configure();
 		new UserController(UserRepository.getInstance());
 		new ChirpController(ChirpRepository.getInstance());
     }
