@@ -55,8 +55,10 @@ public class User {
 			throw new InvalidPermissionException("Wrong password");
 	}
 
-	public void addWatched(String email) throws StorageException
+	public void addWatched(String email) throws AlreadyOnWatchlistException, UserNotFoundException
 	{
+		if(getUserIndex(email) != -1)
+			throw new AlreadyOnWatchlistException("Already on watchlist");
 		watched.add(UserRepository.getInstance().getUserByEmail(email));
 		updateWatchlist();
 	}

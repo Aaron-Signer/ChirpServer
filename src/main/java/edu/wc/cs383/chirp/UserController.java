@@ -30,7 +30,7 @@ public class UserController {
 			return service.getWatchlistByEmail(req.params(":email"));
 		}, json());
 		
-//		Returns a list containing all the handles
+//		Returns a list containing all the emails
 		get("/users/getEmails", (req, res) -> {
 			return service.getEmailList();
 		}, json());
