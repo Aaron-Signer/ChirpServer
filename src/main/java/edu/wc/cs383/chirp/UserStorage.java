@@ -10,6 +10,7 @@ public interface UserStorage{
 	public void removeUserByEmail(String email) throws StorageException;	//In UserController
 	public int getNumberOfUsers();
 	public void updateUserByEmail(String email, String name, String handle) throws StorageException;
-	public int getUserIndex(String email);
-	
+	public int getUserIndexByEmail(String email);
+	public PriorityQueue<Chirp> getWatchlistByEmail(String email) throws StorageException;
+	public ArrayList<String> getHandleList();
 }

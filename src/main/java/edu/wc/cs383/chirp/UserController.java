@@ -21,40 +21,79 @@ public class UserController {
 		
 //		Returns the list of users
 		get("/users", (req, res) -> {
+//			res.status(299);
 		 return service.getUsers();
 		}, json());
 		
+//		Returns the sorted watchlist for an email
+		get("/users/watchlist/:email", (req, res) -> {
+			return service.getWatchlistByEmail(req.params(":email"));
+		}, json());
+		
+//		Returns a list containing all the handles
+		get("/users/getHandles", (req, res) -> {
+			return service.getHandleList();
+		}, json());
+		
+////		Returns the sorted watchlist for an email
+//		get("/users/watchlist2/:email", (req, res) -> {
+//			return service.getWatchlistByEmail2(req.params(":email"));
+//		}, json());
+		
+//		Returns true if the user exist and the password is valid
+		get("/users/verifyUser/:email/:password", (req, res) -> {
+			service.verifyUser(req.params(":email"), req.params(":password"));
+			res.status(200);
+			return true;
+		}, json());	
+		
+//		Returns true if the password is confirmed
+		get("/users/checkPassword/:email/:password", (req, res) -> {
+			service.checkPassword(req.params(":email"), req.params(":password"));
+			return true;
+		}, json());	
+		
+//		Adds the the user to the current users watchlist
+		get("/users/addToWatchList/:email/:email2", (req, res) -> {
+			service.getUserByEmail(req.params(":email")).addWatched(req.params(":email2"));
+			return true;
+		}, json());	
+		
 //		Returns an user given an email address
-		get("/users/:email", (req, res) -> {
+		get("/users/:email/:password", (req, res) -> {
+			service.checkPassword(req.params(":email"), req.params(":password"));
 			return service.getUserByEmail(req.params(":email"));
-		}, json());		
+		}, json());	
 		
 //		Creates an user in the database
-		post("/users/:handle/:email/:password", (req, res) -> {
+		post("/users/:email/:handle/:password", (req, res) -> {
 			User u = new User(req.params(":handle"),req.params(":email"), req.params(":password"));
 			service.addUser(u);
-			return service.getUsers();
+			return true;
 		}, json());
 		
 //		Delete an user by email
-		delete("/users/:email", (req, res) -> {
+		delete("/users/:email/:password", (req, res) -> {
+			service.checkPassword(req.params(":email"), req.params(":password"));
 			service.removeUserByEmail(req.params(":email"));
 			return service.getUsers();
 		}, json());
 		
 //		Update an user by email
 		put("/users/:email/:handle/:password", (req, res) -> {
+			service.checkPassword(req.params(":email"), req.params(":password"));
 			service.updateUserByEmail(req.params(":email"), req.params(":password"), req.params(":handle"));
 			return service.getUsers();
 		}, json());
-				
-//		exception(ArrayIndexOutOfBoundsException.class, (exception, request, response) -> {
-//		    halt(404);
-//		});
 		
 		exception(UserNotFoundException.class, (exception, request, response) -> {
 		    response.status(400);
 		    response.body("No User Exist");
+		});
+		
+		exception(InvalidPermissionException.class, (exception, request, response) -> {
+		    response.status(401);
+		    response.body("Invalid Permission");
 		});
 		
 		exception(DuplicateEmailException.class, (exception, request, response) -> {
@@ -62,6 +101,10 @@ public class UserController {
 		    response.body("Duplicate Email");
 		});
 		
+		exception(DuplicateHandleException.class, (exception, request, response) -> {
+		    response.status(411);
+		    response.body("Duplicate Handle");
+		});
 	}
 
 

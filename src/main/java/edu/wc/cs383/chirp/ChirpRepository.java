@@ -37,7 +37,7 @@ public class ChirpRepository implements ChirpStorage{
 	
 	public ArrayList<Chirp> getChirps(String email) throws UserNotFoundException
 	{
-		if(UserRepository.getInstance().getUserIndex(email) == -1)
+		if(UserRepository.getInstance().getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User Exist");
 		
 		ArrayList<Chirp> tempChirps = new ArrayList<>();

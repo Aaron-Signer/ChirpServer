@@ -33,6 +33,21 @@ public class User {
 		return watchlist;
 	}
 	
+//	public List<Chirp> getSortedWatchlist() throws StorageException
+//	{
+//		for(User u: watchlist)
+//		{
+//			for(Chirp c: ChirpRepository.getInstance().getChirps(u.getEmail()))
+//				sortedWatchlist.add(c);
+//		}
+//		System.out.println(sortedWatchlist.size());
+//		Chirp [] array = new Chirp[sortedWatchlist.size()];
+//		Chirp [] array2 = sortedWatchlist.toArray(array);
+//		for(Chirp c: array2)
+//			System.out.println(c.message);
+//		return new ArrayList<Chirp>(Arrays.asList(array2));
+//	}
+	
 	public PriorityQueue<Chirp> getSortedWatchlist() throws StorageException
 	{
 		for(User u: watchlist)
@@ -40,9 +55,8 @@ public class User {
 			for(Chirp c: ChirpRepository.getInstance().getChirps(u.getEmail()))
 				sortedWatchlist.add(c);
 		}
-		
+
 		return sortedWatchlist;
-		
 	}
 	
 	public void setHandle(String h)
@@ -55,9 +69,10 @@ public class User {
 		password = p;
 	}
 	
-	public boolean checkPassword(String p)
+	public void checkPassword(String p) throws InvalidPermissionException
 	{
-		return password.equals(p);
+		if(!password.equals(p))
+			throw new InvalidPermissionException("Wrong password");
 	}
 	
 	public void addWatched(String email) throws StorageException

@@ -28,19 +28,21 @@ public class UserRepository implements UserStorage{
 		users.add(new User("Jamie-Thompson","thomjm22@wclive.westminster.edu", "Jamie"));
 	}
 	
-	public void addUser(User u) throws DuplicateEmailException
+	public void addUser(User u) throws DuplicateEmailException, DuplicateHandleException
 	{
-		if(getUserIndex(u.getEmail()) != -1)
+		if(getUserIndexByEmail(u.getEmail()) != -1)
 			throw new DuplicateEmailException("User already exits");
+		if(getUserIndexByHandle(u.getHandle()) != -1)
+			throw new DuplicateHandleException("No User");
 		
 		users.add(u);
 	}
 	
 	public User getUserByEmail(String email) throws UserNotFoundException
 	{		
-		if(getUserIndex(email) == -1)
+		if(getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User");
-		return users.get(getUserIndex(email));
+		return users.get(getUserIndexByEmail(email));
 	}
 	
 	public ArrayList<User> getUsers()
@@ -50,7 +52,7 @@ public class UserRepository implements UserStorage{
 	
 	public void removeUserByEmail(String email) throws UserNotFoundException
 	{
-		if(getUserIndex(email) == -1)
+		if(getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User");
 
 		users.remove(getUserByEmail(email));
@@ -63,14 +65,16 @@ public class UserRepository implements UserStorage{
 	
 	public void updateUserByEmail(String email, String password, String handle) throws UserNotFoundException
 	{
-		if(getUserIndex(email) == -1)
+		if(getUserIndexByEmail(email) == -1)
+			throw new UserNotFoundException("No User");
+		if(getUserIndexByHandle(handle) == -1)
 			throw new UserNotFoundException("No User");
 		
-		users.get(getUserIndex(email)).setHandle(handle);
-		users.get(getUserIndex(email)).setPassword(password);
+		users.get(getUserIndexByEmail(email)).setHandle(handle);
+		users.get(getUserIndexByEmail(email)).setPassword(password);
 	}
 	
-	public int getUserIndex(String email)
+	public int getUserIndexByEmail(String email)
 	{
 		for(int i = 0; i < users.size(); i++)
 		{
@@ -78,6 +82,52 @@ public class UserRepository implements UserStorage{
 				return i;
 		}
 		return -1;
+	}
+	
+	public int getUserIndexByHandle(String handle)
+	{
+		for(int i = 0; i < users.size(); i++)
+		{
+			if(users.get(i).getEmail().equals(handle))
+				return i;
+		}
+		return -1;
+	}
+	
+	public PriorityQueue<Chirp> getWatchlistByEmail(String email) throws StorageException
+	{
+		if(getUserIndexByEmail(email) == -1)
+			throw new UserNotFoundException("No User");
+		
+		return getUserByEmail(email).getSortedWatchlist();
+	}
+	
+//	public PriorityQueue<Chirp> getWatchlistByEmail2(String email) throws StorageException
+//	{
+//		if(getUserIndexByEmail(email) == -1)
+//			throw new UserNotFoundException("No User");
+//		
+//		return getUserByEmail(email).getSortedWatchlistPQ();
+//	}
+	
+	public void checkPassword(String email, String password) throws InvalidPermissionException
+	{
+		users.get(getUserIndexByEmail(email)).checkPassword(password);
+	}
+	
+	public void verifyUser(String email, String password) throws InvalidPermissionException, UserNotFoundException
+	{
+		checkPassword(email, password);
+		if(getUserIndexByEmail(email) == -1)
+			throw new UserNotFoundException("No User");
+	}
+
+	public ArrayList<String> getHandleList() 
+	{
+		ArrayList<String> handles = new ArrayList<String>();
+		for(User u: users)
+			handles.add(u.getHandle());
+		return handles;
 	}
 	
 }

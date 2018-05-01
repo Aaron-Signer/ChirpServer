@@ -37,7 +37,7 @@ public class ChirpController {
 		}, json());
 		
 		exception(UserNotFoundException.class, (exception, request, response) -> {
-		    response.status(400);
+		    response.status(450);
 		    response.body("No User exist");
 		});
 		
