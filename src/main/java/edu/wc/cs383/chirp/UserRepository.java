@@ -63,12 +63,12 @@ public class UserRepository implements UserStorage{
 		return users.size();
 	}
 	
-	public void updateUserByEmail(String email, String password, String handle) throws UserNotFoundException
+	public void updateUserByEmail(String email, String handle, String password) throws UserNotFoundException, DuplicateHandleException
 	{
 		if(getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User");
-		if(getUserIndexByHandle(handle) == -1)
-			throw new UserNotFoundException("No User");
+		if(getUserIndexByHandle(handle) != -1)
+			throw new DuplicateHandleException("No User");
 		
 		users.get(getUserIndexByEmail(email)).setHandle(handle);
 		users.get(getUserIndexByEmail(email)).setPassword(password);
@@ -88,7 +88,7 @@ public class UserRepository implements UserStorage{
 	{
 		for(int i = 0; i < users.size(); i++)
 		{
-			if(users.get(i).getEmail().equals(handle))
+			if(users.get(i).getHandle().equals(handle))
 				return i;
 		}
 		return -1;
@@ -110,14 +110,9 @@ public class UserRepository implements UserStorage{
 //		return getUserByEmail(email).getSortedWatchlistPQ();
 //	}
 	
-	public void checkPassword(String email, String password) throws InvalidPermissionException
-	{
-		users.get(getUserIndexByEmail(email)).checkPassword(password);
-	}
-	
 	public void verifyUser(String email, String password) throws InvalidPermissionException, UserNotFoundException
 	{
-		checkPassword(email, password);
+		users.get(getUserIndexByEmail(email)).checkPassword(password);
 		if(getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User");
 	}
@@ -128,6 +123,14 @@ public class UserRepository implements UserStorage{
 		for(User u: users)
 			handles.add(u.getHandle());
 		return handles;
+	}
+	
+	public ArrayList<String> getEmailList() 
+	{
+		ArrayList<String> emails = new ArrayList<String>();
+		for(User u: users)
+			emails.add(u.getEmail());
+		return emails;
 	}
 	
 }

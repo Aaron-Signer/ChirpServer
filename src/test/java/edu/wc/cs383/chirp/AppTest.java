@@ -32,7 +32,7 @@ public class AppTest
 	public void updateUserTest() throws StorageException
 	{
 		UserRepository.getInstance().resetRepository();
-		UserRepository.getInstance().updateUserByEmail("signap22@wclive.westminster.edu", "Aaron Signer", "Sigstar");
+		UserRepository.getInstance().updateUserByEmail("signap22@wclive.westminster.edu", "Sigstar", "Aaron");
 		assertEquals(UserRepository.getInstance().getUserByEmail("signap22@wclive.westminster.edu").getHandle(), "Sigstar");
 	}
 	
@@ -51,5 +51,27 @@ public class AppTest
 		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getSortedWatchlist().peek().getMessage(), "Hello!");
 	}
 	
+	@Test
+	public void checkSortedWatchlistSize() throws StorageException
+	{
+		UserRepository.getInstance().resetRepository();
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").addWatched("signap22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getWatchlistSize(), 3);
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").addWatched("thomjm22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getWatchlistSize(), 6);
+	}
 	
+	@Test
+	public void removeUserFromSortedWatchlistTest() throws StorageException
+	{
+		UserRepository.getInstance().resetRepository();
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").addWatched("signap22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getWatchlistSize(), 3);
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").removeWatched("signap22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getWatchlistSize(), 0);
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").addWatched("thomjm22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getWatchlistSize(), 3);
+		UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").addWatched("signap22@wclive.westminster.edu");
+		assertEquals(UserRepository.getInstance().getUserByEmail("gurnmc22@wclive.westminster.edu").getWatchlistSize(), 6);
+	}
 }
