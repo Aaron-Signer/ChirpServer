@@ -55,7 +55,7 @@ public class User {
 			throw new InvalidPermissionException("Wrong password");
 	}
 
-	public void addWatched(String email) throws AlreadyOnWatchlistException, UserNotFoundException
+	public void addWatched(String email) throws UserNotFoundException ,AlreadyOnWatchlistException
 	{
 		if(getUserIndex(email) != -1)
 			throw new AlreadyOnWatchlistException("Already on watchlist");
@@ -63,7 +63,7 @@ public class User {
 		updateWatchlist();
 	}
 
-	private void updateWatchlist() throws UserNotFoundException
+	public void updateWatchlist() throws UserNotFoundException
 	{
 		sortedWatchlist = new PriorityQueue<Chirp>(1, comp);
 		for(User u: watched)

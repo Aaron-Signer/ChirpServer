@@ -30,10 +30,13 @@ public class ChirpController {
 		}, json());
 		
 //		Adds a new chirp to the chirp database
-		post("/chirps/:email/:message", (req, res) -> {
-			Chirp c = new Chirp(req.params(":email"), req.params(":message"), new Date());
+		post("/chirps/addChirp/:email/:message", (req, res) -> {
+			Chirp c = new Chirp(req.params(":email"),
+					req.params(":message").toString(),
+					UserRepository.getInstance().getUserByEmail(req.params(":email")).getHandle(),
+					new Date());
 			service.addChirp(c);
-			return null;
+			return true;
 		}, json());
 		
 		exception(UserNotFoundException.class, (exception, request, response) -> {

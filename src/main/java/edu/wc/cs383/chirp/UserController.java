@@ -40,6 +40,12 @@ public class UserController {
 			return service.getHandleList();
 		}, json());
 		
+//		Adds the the user to the current users watchlist
+//		get("/users/addToWatchlist/:email/:email2", (req, res) -> {
+//			service.getUserByEmail(req.params(":email")).addWatched(req.params(":email2"));
+//			return true;
+//		}, json());	
+		
 //		Returns true if the user exist and the password is valid
 		get("/users/verifyEmailAndPassword/:email/:password", (req, res) -> {
 			service.verifyUser(req.params(":email"), req.params(":password"));
@@ -60,19 +66,19 @@ public class UserController {
 			return true;
 		}, json());
 				
-//		Update an user by email
-		put("/users/:email/:handle/:password", (req, res) -> {
-			service.verifyUser(req.params(":email"), req.params(":password"));
-			service.updateUserByEmail(req.params(":email"), req.params(":password"), req.params(":handle"));
-			return service.getUsers();
-		}, json());
-		
 //		Adds the the user to the current users watchlist
 		put("/users/addToWatchlist/:email/:email2", (req, res) -> {
 			service.getUserByEmail(req.params(":email")).addWatched(req.params(":email2"));
 			return true;
 		}, json());	
 		
+//		Update an user by email
+		put("/users/:email/:handle/:password", (req, res) -> {
+			service.verifyUser(req.params(":email"), req.params(":password"));
+			service.updateUserByEmail(req.params(":email"), req.params(":password"), req.params(":handle"));
+			return service.getUsers();
+		}, json());
+				
 //		Delete an user by email
 		delete("/users/:email/:password", (req, res) -> {
 			service.verifyUser(req.params(":email"), req.params(":password"));

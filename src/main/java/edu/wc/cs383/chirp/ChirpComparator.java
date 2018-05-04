@@ -6,7 +6,7 @@ public class ChirpComparator implements Comparator<Chirp>{
 
 	@Override
 	public int compare(Chirp c1, Chirp c2) {
-		return c1.getDate().compareTo(c2.getDate());
+		return c2.getDate().compareTo(c1.getDate());
 	}
 
 }

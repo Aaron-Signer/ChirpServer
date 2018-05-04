@@ -99,6 +99,7 @@ public class UserRepository implements UserStorage{
 		if(getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User");
 		
+		getUserByEmail(email).updateWatchlist();	
 		return getUserByEmail(email).getSortedWatchlist();
 	}
 	

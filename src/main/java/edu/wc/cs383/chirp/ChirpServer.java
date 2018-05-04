@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 
 public class ChirpServer {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserNotFoundException {
 		port(5000);
 		BasicConfigurator.configure();
 		new UserController(UserRepository.getInstance());
