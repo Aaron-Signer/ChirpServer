@@ -31,18 +31,14 @@ public class ChirpController {
 		
 //		Adds a new chirp to the chirp database
 		post("/chirps/addChirp/:email/:message", (req, res) -> {
+			String message = java.net.URLDecoder.decode(req.params(":message"), "UTF-8");
 			Chirp c = new Chirp(req.params(":email"),
-					req.params(":message").toString(),
+					message,
 					UserRepository.getInstance().getUserByEmail(req.params(":email")).getHandle(),
 					new Date());
 			service.addChirp(c);
 			return true;
 		}, json());
-		
-		exception(UserNotFoundException.class, (exception, request, response) -> {
-		    response.status(450);
-		    response.body("No User exist");
-		});
 		
 	}
 

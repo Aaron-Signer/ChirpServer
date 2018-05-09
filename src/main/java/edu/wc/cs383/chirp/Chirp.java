@@ -3,9 +3,10 @@ import java.util.*;
 
 public class Chirp {
 
-	String message, email, handle;
-	Date date;
-	UUID id;
+	private String message, email, handle;
+	private Date date;
+	private UUID id;
+	private Byte [] image;
 	
 	public Chirp(String em, String m, String h, Date d)
 	{
@@ -25,7 +26,10 @@ public class Chirp {
 		return email;
 	}
 	
-	public String getHandle;
+	public String getHandle()
+	{
+		return handle;
+	}
 	
 	public Date getDate()
 	{

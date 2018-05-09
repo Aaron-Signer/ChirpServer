@@ -45,6 +45,13 @@ public class UserRepository implements UserStorage{
 		return users.get(getUserIndexByEmail(email));
 	}
 	
+	public User getUserByHandle(String handle) throws UserNotFoundException
+	{		
+		if(getUserIndexByHandle(handle) == -1)
+			throw new UserNotFoundException("No User");
+		return users.get(getUserIndexByHandle(handle));
+	}
+	
 	public ArrayList<User> getUsers()
 	{
 		return users;
@@ -72,6 +79,13 @@ public class UserRepository implements UserStorage{
 		
 		users.get(getUserIndexByEmail(email)).setHandle(handle);
 		users.get(getUserIndexByEmail(email)).setPassword(password);
+	}
+	
+	public ArrayList<User> getWatchedUsers(String email) throws UserNotFoundException
+	{
+		if(getUserIndexByEmail(email) == -1)
+			throw new UserNotFoundException("No User");
+		return getUserByEmail(email).getWatchedUsers();
 	}
 	
 	public int getUserIndexByEmail(String email)
@@ -103,6 +117,23 @@ public class UserRepository implements UserStorage{
 		return getUserByEmail(email).getSortedWatchlist();
 	}
 	
+	public void removeUserFromWatchlist(String email1, String handle) throws UserNotFoundException, AlreadyOnWatchlistException
+	{
+		if(getUserIndexByHandle(handle) == -1)
+			throw new UserNotFoundException("No User");
+		
+		getUserByEmail(email1).removeWatched(handle);
+	}
+	
+	public void addUserToWatchlist(String email1, String handle) throws UserNotFoundException, AlreadyOnWatchlistException
+	{
+		
+		if(getUserIndexByHandle(handle) == -1)
+			throw new UserNotFoundException("No User");
+		
+		getUserByEmail(email1).addWatched(handle);
+	}
+	
 //	public PriorityQueue<Chirp> getWatchlistByEmail2(String email) throws StorageException
 //	{
 //		if(getUserIndexByEmail(email) == -1)
@@ -113,9 +144,10 @@ public class UserRepository implements UserStorage{
 	
 	public void verifyUser(String email, String password) throws InvalidPermissionException, UserNotFoundException
 	{
-		users.get(getUserIndexByEmail(email)).checkPassword(password);
-		if(getUserIndexByEmail(email) == -1)
-			throw new UserNotFoundException("No User");
+		getUserByEmail(email).checkPassword(password);
+//		users.get(getUserIndexByEmail(email)).checkPassword(password);
+//		if(getUserIndexByEmail(email) == -1)
+//			throw new UserNotFoundException("No User");
 	}
 
 	public ArrayList<String> getHandleList() 

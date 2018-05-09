@@ -40,11 +40,11 @@ public class UserController {
 			return service.getHandleList();
 		}, json());
 		
-//		Adds the the user to the current users watchlist
-//		get("/users/addToWatchlist/:email/:email2", (req, res) -> {
-//			service.getUserByEmail(req.params(":email")).addWatched(req.params(":email2"));
-//			return true;
-//		}, json());	
+//		Returns a list of the watched users
+		get("/users/getWatchedList/:email", (req, res) -> {
+			return service.getWatchedUsers(req.params(":email"));
+		}, json());
+		
 		
 //		Returns true if the user exist and the password is valid
 		get("/users/verifyEmailAndPassword/:email/:password", (req, res) -> {
@@ -54,40 +54,48 @@ public class UserController {
 		}, json());	
 		
 //		Returns an user given an email address
-		get("/users/:email/:password", (req, res) -> {
+		get("/users/getUser:email/:password", (req, res) -> {
 			service.verifyUser(req.params(":email"), req.params(":password"));
 			return service.getUserByEmail(req.params(":email"));
 		}, json());	
 		
 //		Creates an user in the database
-		post("/users/:email/:handle/:password", (req, res) -> {
+		post("/users/createUser/:email/:handle/:password", (req, res) -> {
 			User u = new User(req.params(":handle"),req.params(":email"), req.params(":password"));
 			service.addUser(u);
 			return true;
 		}, json());
 				
 //		Adds the the user to the current users watchlist
-		put("/users/addToWatchlist/:email/:email2", (req, res) -> {
-			service.getUserByEmail(req.params(":email")).addWatched(req.params(":email2"));
+		post("/users/addToWatchlist/:email/:handle", (req, res) -> {
+			service.addUserToWatchlist(req.params(":email"), req.params(":handle"));
 			return true;
 		}, json());	
 		
 //		Update an user by email
-		put("/users/:email/:handle/:password", (req, res) -> {
+		put("/users/updateUser/:email/:handle/:password", (req, res) -> {
 			service.verifyUser(req.params(":email"), req.params(":password"));
 			service.updateUserByEmail(req.params(":email"), req.params(":password"), req.params(":handle"));
 			return service.getUsers();
 		}, json());
 				
+//		Remove a user from a users watchlist
+		delete("/users/removeFromWatchlist/:email1/:email2", (req, res) -> {
+			service.removeUserFromWatchlist(req.params(":email1"), req.params(":email2"));
+			return true;
+		}, json());
+		
 //		Delete an user by email
-		delete("/users/:email/:password", (req, res) -> {
+		delete("/users/deleteUser/:email/:password", (req, res) -> {
 			service.verifyUser(req.params(":email"), req.params(":password"));
 			service.removeUserByEmail(req.params(":email"));
 			return service.getUsers();
 		}, json());
+	
+		
 		
 		exception(UserNotFoundException.class, (exception, request, response) -> {
-		    response.status(400);
+		    response.status(402);
 		    response.body("No User Exist");
 		});
 		
@@ -104,6 +112,11 @@ public class UserController {
 		exception(DuplicateHandleException.class, (exception, request, response) -> {
 		    response.status(411);
 		    response.body("Duplicate Handle");
+		});
+		
+		exception(AlreadyOnWatchlistException.class, (exception, request, response) ->{
+			response.status(412);
+			response.body("Already on watchlist");
 		});
 	}
 

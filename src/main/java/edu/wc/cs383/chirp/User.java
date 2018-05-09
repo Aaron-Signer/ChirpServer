@@ -44,6 +44,11 @@ public class User {
 		password = p;
 	}
 
+	public ArrayList<User> getWatchedUsers()
+	{
+		return watched;
+	}
+	
 	public PriorityQueue<Chirp> getSortedWatchlist() throws StorageException
 	{
 		return sortedWatchlist;
@@ -55,11 +60,11 @@ public class User {
 			throw new InvalidPermissionException("Wrong password");
 	}
 
-	public void addWatched(String email) throws UserNotFoundException ,AlreadyOnWatchlistException
+	public void addWatched(String handle) throws UserNotFoundException , AlreadyOnWatchlistException
 	{
-		if(getUserIndex(email) != -1)
+		if(getUserIndexByHandle(handle) != -1)
 			throw new AlreadyOnWatchlistException("Already on watchlist");
-		watched.add(UserRepository.getInstance().getUserByEmail(email));
+		watched.add(UserRepository.getInstance().getUserByHandle(handle));
 		updateWatchlist();
 	}
 
@@ -73,20 +78,30 @@ public class User {
 		}
 	}
 
-	public void removeWatched(String email) throws UserNotFoundException
+	public void removeWatched(String handle) throws UserNotFoundException
 	{
-		int index = getUserIndex(email);
+		int index = getUserIndexByHandle(handle);
 		if(index == -1)
 			throw new UserNotFoundException("No User");
 		watched.remove(index);
 		updateWatchlist();
 	}
 	
-	private int getUserIndex(String email)
+	private int getUserIndexByEmail(String email)
 	{
 		for(int i = 0; i < watched.size(); i++)
 		{
 			if(watched.get(i).getEmail().equals(email))
+				return i;
+		}
+		return -1;
+	}
+	
+	private int getUserIndexByHandle(String handle)
+	{
+		for(int i = 0; i < watched.size(); i++)
+		{
+			if(watched.get(i).getHandle().equals(handle))
 				return i;
 		}
 		return -1;
