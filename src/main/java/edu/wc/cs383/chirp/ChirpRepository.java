@@ -43,6 +43,7 @@ public class ChirpRepository implements ChirpStorage{
 				UserRepository.getInstance().getUserByEmail("thomjm22@wclive.westminster.edu").getHandle(),new Date()));
 		chirps.add(new Chirp("thomjm22@wclive.westminster.edu", "I went for a great walk today.",
 				UserRepository.getInstance().getUserByEmail("thomjm22@wclive.westminster.edu").getHandle(),new Date()));
+		
 		}
 		catch(UserNotFoundException e)
 		{

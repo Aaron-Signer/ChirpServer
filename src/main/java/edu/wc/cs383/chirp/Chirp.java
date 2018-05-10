@@ -16,6 +16,15 @@ public class Chirp {
 		date = d;
 	}
 	
+	public Chirp(String em, String m, String h, Date d, Byte [] im)
+	{
+		email = em;
+		message = m;
+		handle = h;
+		date = d;
+		image = im;
+	}
+	
 	public String getMessage()
 	{
 		return message;

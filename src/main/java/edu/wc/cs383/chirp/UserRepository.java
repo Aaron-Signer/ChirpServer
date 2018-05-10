@@ -81,11 +81,15 @@ public class UserRepository implements UserStorage{
 		users.get(getUserIndexByEmail(email)).setPassword(password);
 	}
 	
-	public ArrayList<User> getWatchedUsers(String email) throws UserNotFoundException
+	public ArrayList<String> getWatchedUsers(String email) throws UserNotFoundException
 	{
 		if(getUserIndexByEmail(email) == -1)
 			throw new UserNotFoundException("No User");
-		return getUserByEmail(email).getWatchedUsers();
+		ArrayList<User> temp = getUserByEmail(email).getWatchedUsers();
+		ArrayList<String> result = new ArrayList<String>();
+		for(User u: temp)
+			result.add(u.getHandle());
+		return result;
 	}
 	
 	public int getUserIndexByEmail(String email)
@@ -133,21 +137,10 @@ public class UserRepository implements UserStorage{
 		
 		getUserByEmail(email1).addWatched(handle);
 	}
-	
-//	public PriorityQueue<Chirp> getWatchlistByEmail2(String email) throws StorageException
-//	{
-//		if(getUserIndexByEmail(email) == -1)
-//			throw new UserNotFoundException("No User");
-//		
-//		return getUserByEmail(email).getSortedWatchlistPQ();
-//	}
-	
+
 	public void verifyUser(String email, String password) throws InvalidPermissionException, UserNotFoundException
 	{
 		getUserByEmail(email).checkPassword(password);
-//		users.get(getUserIndexByEmail(email)).checkPassword(password);
-//		if(getUserIndexByEmail(email) == -1)
-//			throw new UserNotFoundException("No User");
 	}
 
 	public ArrayList<String> getHandleList() 

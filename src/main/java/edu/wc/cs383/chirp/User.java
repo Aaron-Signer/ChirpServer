@@ -4,10 +4,10 @@ import java.util.*;
 
 public class User {
 
-	private String handle, email, password;
-	private PriorityQueue<Chirp> sortedWatchlist;
-	private ArrayList<User> watched;
-	private ChirpComparator comp;
+	String handle, email, password;
+	PriorityQueue<Chirp> sortedWatchlist;
+	ArrayList<User> watched;
+	ChirpComparator comp;
 
 	public User(String h, String e, String p)
 	{
