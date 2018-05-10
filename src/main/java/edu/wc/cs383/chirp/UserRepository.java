@@ -9,7 +9,7 @@ public class UserRepository implements UserStorage{
 	
 	private UserRepository()
 	{
-		resetRepository();
+		users = new ArrayList<User>();
 	}
 	
 	public static UserRepository getInstance()
@@ -20,12 +20,13 @@ public class UserRepository implements UserStorage{
 		return instance;
 	}
 	
+//	For testing
 	public void resetRepository()
 	{
 		users = new ArrayList<User>();
-		users.add(new User("Aaron-Signer","signap22@wclive.westminster.edu", "Aaron"));
-		users.add(new User("Matt-Gurneal","gurnmc22@wclive.westminster.edu", "Matt"));
-		users.add(new User("Jamie-Thompson","thomjm22@wclive.westminster.edu", "Jamie"));
+		users.add(new User("AaronSigner","signap22@wclive.westminster.edu", "Aaron"));
+		users.add(new User("MattGurneal","gurnmc22@wclive.westminster.edu", "Matt"));
+		users.add(new User("JamieThompson","thomjm22@wclive.westminster.edu", "Jamie"));
 	}
 	
 	public void addUser(User u) throws DuplicateEmailException, DuplicateHandleException

@@ -48,7 +48,7 @@ public class User {
 	{
 		return watched;
 	}
-	
+
 	public PriorityQueue<Chirp> getSortedWatchlist() throws StorageException
 	{
 		return sortedWatchlist;
@@ -75,7 +75,75 @@ public class User {
 		{
 			for(Chirp c: ChirpRepository.getInstance().getChirps(u.getEmail()))
 				sortedWatchlist.add(c);
+
+			for(Chirp c: ChirpRepository.getInstance().getAllChirps())
+			{
+				
+				if(checkChirp(c, u) && !inChirpWatchlist(c))
+				{
+					System.out.println("added to watchlist");
+					sortedWatchlist.add(c);
+				}
+			}
 		}
+	}
+
+	public boolean inChirpWatchlist(Chirp newChirp)
+	{
+		for(Chirp c: sortedWatchlist)
+		{
+			if(newChirp.getMessage().equals(c.getMessage()) && newChirp.getHandle().equals(c.getHandle()))
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean checkChirp(Chirp c, User u)
+	{
+		boolean answer = false;
+		char [] message = c.getMessage().toCharArray();
+		String handle = "";
+		if(message.length > 1)
+		{
+			for(int i = 0; i < message.length; i++)
+			{
+				if(i == 0)
+				{
+					if(message[i] == '&' && message[i+1] != ' ')
+					{
+						int j = i+1;
+						while(message[j] != ' ' && (Character.isLetterOrDigit(message[j])))
+						{
+							handle += message[j];
+							j++;
+							if(j == message.length)
+								break;
+						}
+						System.out.println(handle + " -- " + c.getMessage());
+						if(handle.equals(u.getHandle()))
+							answer = true;
+					}
+				}
+				if(i != 0 && i != (message.length -1))
+				{
+					if(message[i-1] == ' ' && message[i] == '&' && message[i+1] != ' ')
+					{
+						int j = i+1;
+						while(message[j] != ' ' && (Character.isLetterOrDigit(message[j])))
+						{
+							handle += message[j];
+							j++;
+							if(j == message.length)
+								break;
+						}
+						System.out.println(handle + " ++ " + c.getMessage());
+						if(handle.equals(u.getHandle()))
+							answer = true;
+					}
+				}
+			}
+		}
+		return answer;
 	}
 
 	public void removeWatched(String handle) throws UserNotFoundException
@@ -86,7 +154,7 @@ public class User {
 		watched.remove(index);
 		updateWatchlist();
 	}
-	
+
 	private int getUserIndexByEmail(String email)
 	{
 		for(int i = 0; i < watched.size(); i++)
@@ -96,7 +164,7 @@ public class User {
 		}
 		return -1;
 	}
-	
+
 	private int getUserIndexByHandle(String handle)
 	{
 		for(int i = 0; i < watched.size(); i++)
@@ -107,6 +175,16 @@ public class User {
 		return -1;
 	}
 
+	private int getUserIndexByHandle2(String handle)
+	{
+		for(int i = 0; i < UserRepository.getInstance().getNumberOfUsers(); i++)
+		{
+			if(UserRepository.getInstance().getUsers().get(i).getHandle().equals(handle))
+				return i;
+		}
+		return -1;
+	}
+	
 	//	public List<Chirp> getSortedWatchlist() throws StorageException
 	//	{
 	//		for(User u: watchlist)
